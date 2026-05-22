@@ -16,6 +16,16 @@ This repo is the operating source for the EWL content, commerce, admin, review, 
 - Gmail and Contacts: outreach and story pipeline
 - HeyGen, CapCut, InVideo, Photoshop, Adobe Express: production tools only
 
+## Timezone Lock
+
+Primary business timezone: America/New_York.
+
+Google Sheets, Google Calendar, admin display logic, Xyla publishing windows, and daily operating cadence use New York time.
+
+Vercel cron schedules remain UTC and must be documented with New York conversions.
+
+Supabase stores timestamps as timestamptz.
+
 ## Prime Rule
 
 Xyla executes approved content only. High-risk content requires human review before publishing.

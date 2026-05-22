@@ -1,4 +1,5 @@
 import { AgentChat } from './components/AgentChat';
+import { DashboardStatus } from './components/DashboardStatus';
 import { ThemeToggle } from './components/ThemeToggle';
 
 const primaryTimezone = 'America/New_York';
@@ -137,6 +138,8 @@ export default function HomePage() {
           </div>
 
           <aside className="right-panel">
+            <DashboardStatus />
+
             <div className="module">
               <h2>Operational status</h2>
               <div className="status-list">

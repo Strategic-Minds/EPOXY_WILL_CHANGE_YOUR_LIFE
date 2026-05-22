@@ -32,7 +32,7 @@ export function AgentChat() {
           agent_name: 'Executive Assistant Agent',
           task: activeTask,
           operator_code: operatorCode,
-          context: 'Request originated from the EWL v0-style admin UI.'
+          context: 'Request originated from the EWL v0 template command UI.'
         })
       });
 
@@ -47,43 +47,34 @@ export function AgentChat() {
   }
 
   return (
-    <div className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-950 p-4">
-      <label className="text-xs uppercase tracking-[0.2em] text-neutral-500">Command input</label>
-      <input
-        value={operatorCode}
-        onChange={(event) => setOperatorCode(event.target.value)}
-        placeholder="Operator code"
-        type="password"
-        className="mt-3 w-full rounded-2xl border border-neutral-800 bg-neutral-900 px-4 py-3 text-sm text-neutral-100 outline-none placeholder:text-neutral-600"
-      />
-      <textarea
-        value={task}
-        onChange={(event) => setTask(event.target.value)}
-        placeholder="Ask the Executive Assistant Agent what to inspect, summarize, route, or prepare."
-        className="mt-3 min-h-28 w-full rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-100 outline-none placeholder:text-neutral-600"
-      />
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => runCommand()}
-          disabled={loading}
-          className="rounded-full bg-amber-500 px-4 py-2 text-xs font-medium text-neutral-950 disabled:opacity-50"
-        >
+    <div className="composer">
+      <label className="composer-label">Command input</label>
+      <div className="form-grid">
+        <input
+          value={operatorCode}
+          onChange={(event) => setOperatorCode(event.target.value)}
+          placeholder="Operator code"
+          type="password"
+          className="field"
+        />
+        <textarea
+          value={task}
+          onChange={(event) => setTask(event.target.value)}
+          placeholder="Ask the Executive Assistant Agent what to inspect, summarize, route, or prepare."
+          className="textarea"
+        />
+      </div>
+      <div className="button-row">
+        <button type="button" onClick={() => runCommand()} disabled={loading} className="primary-button">
           {loading ? 'Running...' : 'Run agent'}
         </button>
         {quickCommands.map((command) => (
-          <button
-            key={command}
-            type="button"
-            onClick={() => runCommand(command)}
-            disabled={loading}
-            className="rounded-full border border-neutral-700 px-3 py-2 text-xs text-neutral-300 hover:border-amber-400 hover:text-amber-300 disabled:opacity-50"
-          >
+          <button key={command} type="button" onClick={() => runCommand(command)} disabled={loading} className="quick-button">
             {command}
           </button>
         ))}
       </div>
-      <div className="mt-4 min-h-32 whitespace-pre-wrap rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm leading-6 text-neutral-300">
+      <div className="output">
         {output || 'Agent output will appear here. No public publishing, billing, deployment, or destructive action is executed from this panel.'}
       </div>
     </div>

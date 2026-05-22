@@ -1,6 +1,7 @@
 import { AgentChat } from './components/AgentChat';
 import { DashboardStatus } from './components/DashboardStatus';
 import { ThemeToggle } from './components/ThemeToggle';
+import { XylaQueuePanel } from './components/XylaQueuePanel';
 
 const primaryTimezone = 'America/New_York';
 
@@ -139,6 +140,7 @@ export default function HomePage() {
 
           <aside className="right-panel">
             <DashboardStatus />
+            <XylaQueuePanel />
 
             <div className="module">
               <h2>Operational status</h2>

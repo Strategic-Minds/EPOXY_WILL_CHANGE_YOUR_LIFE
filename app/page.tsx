@@ -1,10 +1,6 @@
 import { AgentChat } from './components/AgentChat';
-import { ContentEditorPanel } from './components/ContentEditorPanel';
-import { DashboardStatus } from './components/DashboardStatus';
-import { MarketingCalendarPanel } from './components/MarketingCalendarPanel';
-import { ReviewQueuePanel } from './components/ReviewQueuePanel';
+import { OperatorCodeProvider } from './components/OperatorCodeProvider';
 import { ThemeToggle } from './components/ThemeToggle';
-import { XylaQueuePanel } from './components/XylaQueuePanel';
 
 const primaryTimezone = 'America/New_York';
 
@@ -142,11 +138,7 @@ export default function HomePage() {
           </div>
 
           <aside className="right-panel">
-            <DashboardStatus />
-            <ContentEditorPanel />
-            <MarketingCalendarPanel />
-            <ReviewQueuePanel />
-            <XylaQueuePanel />
+            <OperatorCodeProvider />
 
             <div className="module">
               <h2>Operational status</h2>

@@ -38,10 +38,13 @@ type ReadyItemsResponse = {
   items: XylaItem[];
 };
 
-export function XylaQueuePanel() {
-  const [operatorCode, setOperatorCode] = useState('');
+type XylaQueuePanelProps = {
+  operatorCode: string;
+};
+
+export function XylaQueuePanel({ operatorCode }: XylaQueuePanelProps) {
   const [items, setItems] = useState<XylaItem[]>([]);
-  const [message, setMessage] = useState('Enter operator code and refresh to load approved Xyla-ready items.');
+  const [message, setMessage] = useState('Use the Operator Session field above, then refresh to load approved Xyla-ready items.');
   const [loading, setLoading] = useState(false);
   const [reviewingId, setReviewingId] = useState('');
 
@@ -94,18 +97,9 @@ export function XylaQueuePanel() {
   return (
     <div className="module xyla-panel">
       <h2>Xyla handoff gate</h2>
-      <div className="form-grid compact">
-        <input
-          value={operatorCode}
-          onChange={(event) => setOperatorCode(event.target.value)}
-          placeholder="Operator code"
-          type="password"
-          className="field"
-        />
-        <button type="button" onClick={refresh} disabled={loading} className="primary-button status-button">
-          {loading ? 'Loading...' : 'Refresh Xyla'}
-        </button>
-      </div>
+      <button type="button" onClick={refresh} disabled={loading || !operatorCode} className="primary-button status-button full-width-button">
+        {loading ? 'Loading...' : 'Refresh Xyla'}
+      </button>
       <div className="status-muted">{message}</div>
 
       {items.length > 0 ? (
@@ -128,7 +122,7 @@ export function XylaQueuePanel() {
                 <button
                   type="button"
                   onClick={() => markReviewed(item.id)}
-                  disabled={reviewingId === item.id}
+                  disabled={reviewingId === item.id || !operatorCode}
                   className="quick-button xyla-review-button"
                 >
                   {reviewingId === item.id ? 'Marking...' : 'Mark reviewed only'}

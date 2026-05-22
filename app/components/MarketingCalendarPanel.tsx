@@ -25,15 +25,22 @@ type WaitingResponse = {
   rows: CalendarRow[];
 };
 
+type CreatedDraft = {
+  content_item_id: string;
+  review_queue_id: string;
+};
+
 export function MarketingCalendarPanel() {
   const [operatorCode, setOperatorCode] = useState('');
   const [rows, setRows] = useState<CalendarRow[]>([]);
   const [message, setMessage] = useState('Enter operator code and refresh to load marketing calendar rows waiting for content.');
+  const [createdDraft, setCreatedDraft] = useState<CreatedDraft | null>(null);
   const [loading, setLoading] = useState(false);
   const [workingId, setWorkingId] = useState('');
 
   async function refresh() {
     setLoading(true);
+    setCreatedDraft(null);
     setMessage('Loading waiting marketing calendar rows...');
 
     try {
@@ -56,6 +63,7 @@ export function MarketingCalendarPanel() {
 
   async function createDraft(rowId: string) {
     setWorkingId(rowId);
+    setCreatedDraft(null);
     setMessage('Creating draft content item and review queue row...');
 
     try {
@@ -70,7 +78,8 @@ export function MarketingCalendarPanel() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? 'Draft creation failed');
       setRows((current) => current.filter((row) => row.id !== rowId));
-      setMessage('Draft content item created and sent to review queue. No Xyla handoff or publishing occurred.');
+      setCreatedDraft({ content_item_id: data.content_item_id, review_queue_id: data.review_queue_id });
+      setMessage('Draft content item created. Copy the content_item_id below and paste it into Content Editor. No Xyla handoff or publishing occurred.');
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Unknown draft creation error');
     } finally {
@@ -94,6 +103,14 @@ export function MarketingCalendarPanel() {
         </button>
       </div>
       <div className="status-muted">{message}</div>
+
+      {createdDraft ? (
+        <div className="copy-box">
+          <strong>Created content_item_id</strong>
+          <code>{createdDraft.content_item_id}</code>
+          <p>Copy this ID into the Content Editor panel to edit the draft before review.</p>
+        </div>
+      ) : null}
 
       {rows.length > 0 ? (
         <div className="agent-list latest-runs">

@@ -5,8 +5,9 @@ export async function POST(request: Request) {
   const payload = await request.json();
   const title = payload?.title ?? payload?.name ?? 'Shopify Event';
   const image = payload?.image?.src ?? payload?.images?.[0]?.src ?? null;
+  const db = supabaseAdmin as any;
 
-  const { error } = await supabaseAdmin.from('assets').insert({
+  const { error } = await db.from('assets').insert({
     source: 'shopify',
     source_url: image,
     file_name: title,

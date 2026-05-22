@@ -1,4 +1,5 @@
 import { AgentChat } from './components/AgentChat';
+import { ContentEditorPanel } from './components/ContentEditorPanel';
 import { DashboardStatus } from './components/DashboardStatus';
 import { MarketingCalendarPanel } from './components/MarketingCalendarPanel';
 import { ReviewQueuePanel } from './components/ReviewQueuePanel';
@@ -142,6 +143,7 @@ export default function HomePage() {
 
           <aside className="right-panel">
             <DashboardStatus />
+            <ContentEditorPanel />
             <MarketingCalendarPanel />
             <ReviewQueuePanel />
             <XylaQueuePanel />

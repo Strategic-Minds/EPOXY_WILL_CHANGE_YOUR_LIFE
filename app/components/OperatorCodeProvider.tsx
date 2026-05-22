@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ActivityLogPanel } from './ActivityLogPanel';
 import { ContentEditorPanel } from './ContentEditorPanel';
 import { DashboardStatus } from './DashboardStatus';
 import { MarketingCalendarPanel } from './MarketingCalendarPanel';
@@ -27,6 +28,7 @@ export function OperatorCodeProvider() {
       </div>
 
       <DashboardStatus operatorCode={operatorCode} />
+      <ActivityLogPanel operatorCode={operatorCode} />
       <ContentEditorPanel operatorCode={operatorCode} />
       <MarketingCalendarPanel operatorCode={operatorCode} />
       <ReviewQueuePanel operatorCode={operatorCode} />

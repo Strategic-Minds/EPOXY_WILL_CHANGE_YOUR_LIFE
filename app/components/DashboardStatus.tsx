@@ -22,8 +22,11 @@ type DashboardStatusResponse = {
   }>;
 };
 
-export function DashboardStatus() {
-  const [operatorCode, setOperatorCode] = useState('');
+type DashboardStatusProps = {
+  operatorCode: string;
+};
+
+export function DashboardStatus({ operatorCode }: DashboardStatusProps) {
   const [status, setStatus] = useState<DashboardStatusResponse | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -53,21 +56,12 @@ export function DashboardStatus() {
   return (
     <div className="module dashboard-status">
       <h2>Live Supabase status</h2>
-      <div className="form-grid compact">
-        <input
-          value={operatorCode}
-          onChange={(event) => setOperatorCode(event.target.value)}
-          placeholder="Operator code"
-          type="password"
-          className="field"
-        />
-        <button type="button" onClick={refresh} disabled={loading} className="primary-button status-button">
-          {loading ? 'Refreshing...' : 'Refresh status'}
-        </button>
-      </div>
+      <button type="button" onClick={refresh} disabled={loading || !operatorCode} className="primary-button status-button full-width-button">
+        {loading ? 'Refreshing...' : 'Refresh status'}
+      </button>
 
       {error ? <div className="status-error">{error}</div> : null}
-      {!status && !error ? <div className="status-muted">Enter operator code and refresh to load live counts.</div> : null}
+      {!status && !error ? <div className="status-muted">Use the Operator Session field above, then refresh to load live counts.</div> : null}
 
       {counts ? (
         <>

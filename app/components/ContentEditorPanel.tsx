@@ -94,6 +94,7 @@ export function ContentEditorPanel() {
   return (
     <div className="module content-editor-panel">
       <h2>Content editor</h2>
+      <div className="status-muted">Get a content_item_id from Marketing Calendar after draft creation, or from Review Queue / Xyla handoff cards.</div>
       <div className="form-grid compact">
         <input
           value={operatorCode}
@@ -109,13 +110,17 @@ export function ContentEditorPanel() {
       <input
         value={contentItemId}
         onChange={(event) => setContentItemId(event.target.value)}
-        placeholder="content_item_id"
+        placeholder="paste content_item_id here"
         className="field editor-id-field"
       />
       <div className="status-muted">{message}</div>
 
       {item ? (
         <div className="editor-fields">
+          <div className="copy-box compact-copy">
+            <span>loaded content_item_id</span>
+            <code>{item.id}</code>
+          </div>
           <div className="status-row latest-row">
             <span>Status</span>
             <strong>{item.review_status ?? 'unknown'} • Xyla {item.xyla_ready ? 'ready' : 'not ready'}</strong>

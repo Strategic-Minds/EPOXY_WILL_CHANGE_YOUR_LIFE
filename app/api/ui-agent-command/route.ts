@@ -10,6 +10,13 @@ function needsPriorityAlert(agentName: string, output: string) {
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
+  const submittedCode = String(body.operator_code ?? '');
+  const expectedCode = process.env.UI_ACCESS_CODE;
+
+  if (!expectedCode || submittedCode !== expectedCode) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const task = String(body.task ?? '').trim();
   const agentName = String(body.agent_name ?? 'Executive Assistant Agent');
   const context = String(body.context ?? 'Request originated from the EWL v0-style admin UI.');

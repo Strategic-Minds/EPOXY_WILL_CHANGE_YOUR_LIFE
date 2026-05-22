@@ -57,7 +57,7 @@ export function XylaQueuePanel() {
       if (!response.ok) throw new Error('error' in data ? data.error : 'Xyla queue load failed');
       const result = data as ReadyItemsResponse;
       setItems(result.items ?? []);
-      setMessage(`${result.count} approved Xyla-ready item(s) loaded. No publishing performed.`);
+      setMessage(`${result.count} approved Xyla-ready item(s) loaded. Copy content_item_id into Content Editor if edits are needed. No publishing performed.`);
     } catch (error) {
       setItems([]);
       setMessage(error instanceof Error ? error.message : 'Unknown Xyla queue error');
@@ -114,6 +114,10 @@ export function XylaQueuePanel() {
             return (
               <div key={item.id} className="agent-card xyla-card">
                 <strong>{content?.hook ?? item.post_type ?? 'Xyla-ready item'}</strong>
+                <div className="copy-box compact-copy">
+                  <span>content_item_id</span>
+                  <code>{item.content_item_id}</code>
+                </div>
                 <p>{item.platform ?? 'platform pending'} • {item.post_type ?? 'post type pending'} • {item.handoff_status}</p>
                 <p>{item.caption ?? content?.caption ?? 'Caption pending'}</p>
                 <p>CTA: {item.cta ?? content?.cta ?? 'CTA pending'} → {item.landing_page ?? content?.landing_page ?? 'Landing page pending'}</p>

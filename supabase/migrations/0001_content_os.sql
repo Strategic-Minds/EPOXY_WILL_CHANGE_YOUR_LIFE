@@ -112,7 +112,28 @@ create table if not exists story_candidates (
   created_at timestamptz default now()
 );
 
+create table if not exists marketing_calendar_rows (
+  id uuid primary key default gen_random_uuid(),
+  sheet_id text not null,
+  sheet_tab text not null,
+  row_number int not null,
+  publish_date date,
+  day_of_week text,
+  format text,
+  post_contents text,
+  status text,
+  platform text,
+  media_link text,
+  additional_notes text,
+  content_item_id uuid references content_items(id) on delete set null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(sheet_id, sheet_tab, row_number)
+);
+
 create index if not exists idx_content_review_status on content_items(review_status);
 create index if not exists idx_content_xyla_ready on content_items(xyla_ready);
 create index if not exists idx_xyla_handoff_status on xyla_queue(handoff_status);
 create index if not exists idx_metrics_content_item on metrics(content_item_id);
+create index if not exists idx_marketing_calendar_publish_date on marketing_calendar_rows(publish_date);
+create index if not exists idx_marketing_calendar_status on marketing_calendar_rows(status);

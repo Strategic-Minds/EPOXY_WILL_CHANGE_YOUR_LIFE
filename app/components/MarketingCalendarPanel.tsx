@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyButton } from './CopyButton';
 
 type CalendarRow = {
   id: string;
@@ -107,7 +108,10 @@ export function MarketingCalendarPanel() {
       {createdDraft ? (
         <div className="copy-box">
           <strong>Created content_item_id</strong>
-          <code>{createdDraft.content_item_id}</code>
+          <div className="copy-row">
+            <code>{createdDraft.content_item_id}</code>
+            <CopyButton text={createdDraft.content_item_id} />
+          </div>
           <p>Copy this ID into the Content Editor panel to edit the draft before review.</p>
         </div>
       ) : null}

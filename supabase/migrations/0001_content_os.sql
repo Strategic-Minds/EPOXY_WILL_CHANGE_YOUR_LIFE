@@ -131,9 +131,25 @@ create table if not exists marketing_calendar_rows (
   unique(sheet_id, sheet_tab, row_number)
 );
 
+create table if not exists agent_runs (
+  id uuid primary key default gen_random_uuid(),
+  agent_name text not null,
+  task text not null,
+  context text,
+  output text,
+  provider text,
+  model text,
+  status text default 'completed',
+  approval_required boolean default true,
+  slack_sent boolean default false,
+  created_at timestamptz default now()
+);
+
 create index if not exists idx_content_review_status on content_items(review_status);
 create index if not exists idx_content_xyla_ready on content_items(xyla_ready);
 create index if not exists idx_xyla_handoff_status on xyla_queue(handoff_status);
 create index if not exists idx_metrics_content_item on metrics(content_item_id);
 create index if not exists idx_marketing_calendar_publish_date on marketing_calendar_rows(publish_date);
 create index if not exists idx_marketing_calendar_status on marketing_calendar_rows(status);
+create index if not exists idx_agent_runs_agent_name on agent_runs(agent_name);
+create index if not exists idx_agent_runs_created_at on agent_runs(created_at);

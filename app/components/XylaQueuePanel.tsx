@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyButton } from './CopyButton';
 
 type XylaItem = {
   id: string;
@@ -116,7 +117,10 @@ export function XylaQueuePanel() {
                 <strong>{content?.hook ?? item.post_type ?? 'Xyla-ready item'}</strong>
                 <div className="copy-box compact-copy">
                   <span>content_item_id</span>
-                  <code>{item.content_item_id}</code>
+                  <div className="copy-row">
+                    <code>{item.content_item_id}</code>
+                    <CopyButton text={item.content_item_id} />
+                  </div>
                 </div>
                 <p>{item.platform ?? 'platform pending'} • {item.post_type ?? 'post type pending'} • {item.handoff_status}</p>
                 <p>{item.caption ?? content?.caption ?? 'Caption pending'}</p>

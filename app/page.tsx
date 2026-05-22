@@ -1,3 +1,5 @@
+import { AgentChat } from './components/AgentChat';
+
 const primaryTimezone = 'America/New_York';
 
 const stack = [
@@ -20,15 +22,6 @@ const agents = [
   'GitHub Architect',
   'Shopify Conversion',
   'Slack Command'
-];
-
-const commands = [
-  'Run daily command',
-  'Find approval blockers',
-  'Create content from calendar',
-  'Check Xyla-ready queue',
-  'Summarize AutoBuilder loop',
-  'Prepare Shopify CTA fixes'
 ];
 
 export default function HomePage() {
@@ -71,7 +64,7 @@ export default function HomePage() {
                 <p className="text-xs uppercase tracking-[0.25em] text-amber-400">Vercel v0-style frontend</p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight">Chat-first admin UI</h2>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-neutral-400">
-                  This interface is the visual command layer for GPT agents. It is wired conceptually to <code>/api/agent-command</code>, with human approval gates before publishing, billing, deployment, claims, or destructive actions.
+                  This interface is the visual command layer for GPT agents. The browser calls a protected UI route, and Vercel handles AI Gateway, Supabase, and Slack server-side.
                 </p>
               </div>
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
@@ -99,19 +92,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-950 p-4">
-                <label className="text-xs uppercase tracking-[0.2em] text-neutral-500">Command input</label>
-                <div className="mt-3 min-h-28 rounded-2xl border border-neutral-800 bg-neutral-900 p-4 text-sm text-neutral-500">
-                  Cloud-only UI placeholder. Next step: add authenticated client action that posts to /api/agent-command with ADMIN_SECRET handled server-side.
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {commands.map((command) => (
-                    <button key={command} className="rounded-full border border-neutral-700 px-3 py-2 text-xs text-neutral-300 hover:border-amber-400 hover:text-amber-300">
-                      {command}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <AgentChat />
             </div>
 
             <div className="grid gap-6">

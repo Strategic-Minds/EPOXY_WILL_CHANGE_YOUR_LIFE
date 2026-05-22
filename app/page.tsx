@@ -1,8 +1,22 @@
+const primaryTimezone = 'America/New_York';
+
 export default function HomePage() {
+  const nowNewYork = new Intl.DateTimeFormat('en-US', {
+    timeZone: primaryTimezone,
+    dateStyle: 'full',
+    timeStyle: 'short'
+  }).format(new Date());
+
   return (
     <main>
       <h1>EWL Hyperdrive OS</h1>
       <p>AI content, commerce, review, and social execution command center.</p>
+      <section>
+        <h2>Timezone Lock</h2>
+        <p>Primary timezone: <code>{primaryTimezone}</code></p>
+        <p>Current New York time: {nowNewYork}</p>
+        <p>Vercel cron remains UTC. Calendar, Sheet, admin display, and Xyla scheduling use New York time.</p>
+      </section>
       <section>
         <h2>Locked Stack</h2>
         <ul>

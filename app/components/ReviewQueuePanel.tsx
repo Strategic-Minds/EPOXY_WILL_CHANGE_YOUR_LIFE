@@ -54,7 +54,7 @@ export function ReviewQueuePanel() {
       if (!response.ok) throw new Error('error' in data ? data.error : 'Review queue load failed');
       const result = data as ReviewResponse;
       setItems(result.items ?? []);
-      setMessage(`${result.count} pending review item(s) loaded.`);
+      setMessage(`${result.count} pending review item(s) loaded. Copy a content_item_id into Content Editor when edits are needed.`);
     } catch (error) {
       setItems([]);
       setMessage(error instanceof Error ? error.message : 'Unknown review queue error');
@@ -116,6 +116,10 @@ export function ReviewQueuePanel() {
             return (
               <div key={item.id} className="agent-card review-card">
                 <strong>{content?.hook ?? item.review_type ?? 'Review item'}</strong>
+                <div className="copy-box compact-copy">
+                  <span>content_item_id</span>
+                  <code>{item.content_item_id}</code>
+                </div>
                 <p>{content?.platform ?? 'platform pending'} • {content?.content_type ?? 'type pending'} • risk {riskScore}</p>
                 <p>{item.reason ?? content?.caption ?? 'Review reason pending'}</p>
                 <p>CTA: {content?.cta ?? 'CTA pending'} → {content?.landing_page ?? 'Landing page pending'}</p>

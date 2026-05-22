@@ -31,10 +31,13 @@ type CreatedDraft = {
   review_queue_id: string;
 };
 
-export function MarketingCalendarPanel() {
-  const [operatorCode, setOperatorCode] = useState('');
+type MarketingCalendarPanelProps = {
+  operatorCode: string;
+};
+
+export function MarketingCalendarPanel({ operatorCode }: MarketingCalendarPanelProps) {
   const [rows, setRows] = useState<CalendarRow[]>([]);
-  const [message, setMessage] = useState('Enter operator code and refresh to load marketing calendar rows waiting for content.');
+  const [message, setMessage] = useState('Use the Operator Session field above, then refresh to load marketing calendar rows waiting for content.');
   const [createdDraft, setCreatedDraft] = useState<CreatedDraft | null>(null);
   const [loading, setLoading] = useState(false);
   const [workingId, setWorkingId] = useState('');
@@ -91,18 +94,9 @@ export function MarketingCalendarPanel() {
   return (
     <div className="module marketing-panel">
       <h2>Marketing calendar intake</h2>
-      <div className="form-grid compact">
-        <input
-          value={operatorCode}
-          onChange={(event) => setOperatorCode(event.target.value)}
-          placeholder="Operator code"
-          type="password"
-          className="field"
-        />
-        <button type="button" onClick={refresh} disabled={loading} className="primary-button status-button">
-          {loading ? 'Loading...' : 'Refresh calendar'}
-        </button>
-      </div>
+      <button type="button" onClick={refresh} disabled={loading || !operatorCode} className="primary-button status-button full-width-button">
+        {loading ? 'Loading...' : 'Refresh calendar'}
+      </button>
       <div className="status-muted">{message}</div>
 
       {createdDraft ? (
@@ -126,7 +120,7 @@ export function MarketingCalendarPanel() {
               <button
                 type="button"
                 onClick={() => createDraft(row.id)}
-                disabled={workingId === row.id}
+                disabled={workingId === row.id || !operatorCode}
                 className="quick-button"
               >
                 {workingId === row.id ? 'Creating...' : 'Create draft for review'}

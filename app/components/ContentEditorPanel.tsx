@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyButton } from './CopyButton';
 
 type ContentItem = {
   id: string;
@@ -119,7 +120,10 @@ export function ContentEditorPanel() {
         <div className="editor-fields">
           <div className="copy-box compact-copy">
             <span>loaded content_item_id</span>
-            <code>{item.id}</code>
+            <div className="copy-row">
+              <code>{item.id}</code>
+              <CopyButton text={item.id} />
+            </div>
           </div>
           <div className="status-row latest-row">
             <span>Status</span>

@@ -25,10 +25,11 @@ export async function POST(request: Request) {
   }
 
   try {
+    const db = supabaseAdmin as any;
     const result = await runAgentCommand({ agentName, task, context, model });
     const priority = needsPriorityAlert(agentName, result.output);
 
-    const saved = await supabaseAdmin
+    const saved = await db
       .from('agent_runs')
       .insert({
         agent_name: agentName,
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
         }
       });
       slackSent = Boolean(slack.sent);
-      await supabaseAdmin.from('agent_runs').update({ slack_sent: slackSent }).eq('id', saved.data.id);
+      await db.from('agent_runs').update({ slack_sent: slackSent }).eq('id', saved.data.id);
     }
 
     return NextResponse.json({

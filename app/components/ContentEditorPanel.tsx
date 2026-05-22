@@ -21,11 +21,14 @@ type ContentItem = {
   status: string | null;
 };
 
-export function ContentEditorPanel() {
-  const [operatorCode, setOperatorCode] = useState('');
+type ContentEditorPanelProps = {
+  operatorCode: string;
+};
+
+export function ContentEditorPanel({ operatorCode }: ContentEditorPanelProps) {
   const [contentItemId, setContentItemId] = useState('');
   const [item, setItem] = useState<ContentItem | null>(null);
-  const [message, setMessage] = useState('Enter operator code and content item ID to load an editable draft or rejected item.');
+  const [message, setMessage] = useState('Enter a content item ID to load an editable draft or rejected item.');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -98,22 +101,15 @@ export function ContentEditorPanel() {
       <div className="status-muted">Get a content_item_id from Marketing Calendar after draft creation, or from Review Queue / Xyla handoff cards.</div>
       <div className="form-grid compact">
         <input
-          value={operatorCode}
-          onChange={(event) => setOperatorCode(event.target.value)}
-          placeholder="Operator code"
-          type="password"
+          value={contentItemId}
+          onChange={(event) => setContentItemId(event.target.value)}
+          placeholder="paste content_item_id here"
           className="field"
         />
-        <button type="button" onClick={loadItem} disabled={loading} className="primary-button status-button">
+        <button type="button" onClick={loadItem} disabled={loading || !operatorCode} className="primary-button status-button">
           {loading ? 'Loading...' : 'Load item'}
         </button>
       </div>
-      <input
-        value={contentItemId}
-        onChange={(event) => setContentItemId(event.target.value)}
-        placeholder="paste content_item_id here"
-        className="field editor-id-field"
-      />
       <div className="status-muted">{message}</div>
 
       {item ? (
@@ -147,7 +143,7 @@ export function ContentEditorPanel() {
             placeholder="Hashtags, comma separated"
             className="field"
           />
-          <button type="button" onClick={saveDraft} disabled={saving} className="primary-button status-button">
+          <button type="button" onClick={saveDraft} disabled={saving || !operatorCode} className="primary-button status-button">
             {saving ? 'Saving...' : 'Save draft only'}
           </button>
         </div>

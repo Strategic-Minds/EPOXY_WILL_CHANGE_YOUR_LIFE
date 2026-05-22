@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CopyButton } from './CopyButton';
 
 type ReviewItem = {
   id: string;
@@ -118,7 +119,10 @@ export function ReviewQueuePanel() {
                 <strong>{content?.hook ?? item.review_type ?? 'Review item'}</strong>
                 <div className="copy-box compact-copy">
                   <span>content_item_id</span>
-                  <code>{item.content_item_id}</code>
+                  <div className="copy-row">
+                    <code>{item.content_item_id}</code>
+                    <CopyButton text={item.content_item_id} />
+                  </div>
                 </div>
                 <p>{content?.platform ?? 'platform pending'} • {content?.content_type ?? 'type pending'} • risk {riskScore}</p>
                 <p>{item.reason ?? content?.caption ?? 'Review reason pending'}</p>

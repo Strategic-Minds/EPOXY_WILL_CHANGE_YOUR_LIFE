@@ -35,10 +35,13 @@ type ReviewResponse = {
   items: ReviewItem[];
 };
 
-export function ReviewQueuePanel() {
-  const [operatorCode, setOperatorCode] = useState('');
+type ReviewQueuePanelProps = {
+  operatorCode: string;
+};
+
+export function ReviewQueuePanel({ operatorCode }: ReviewQueuePanelProps) {
   const [items, setItems] = useState<ReviewItem[]>([]);
-  const [message, setMessage] = useState('Enter operator code and refresh to load pending review items.');
+  const [message, setMessage] = useState('Use the Operator Session field above, then refresh to load pending review items.');
   const [loading, setLoading] = useState(false);
   const [workingId, setWorkingId] = useState('');
 
@@ -94,18 +97,9 @@ export function ReviewQueuePanel() {
   return (
     <div className="module review-panel">
       <h2>Review queue</h2>
-      <div className="form-grid compact">
-        <input
-          value={operatorCode}
-          onChange={(event) => setOperatorCode(event.target.value)}
-          placeholder="Operator code"
-          type="password"
-          className="field"
-        />
-        <button type="button" onClick={refresh} disabled={loading} className="primary-button status-button">
-          {loading ? 'Loading...' : 'Refresh reviews'}
-        </button>
-      </div>
+      <button type="button" onClick={refresh} disabled={loading || !operatorCode} className="primary-button status-button full-width-button">
+        {loading ? 'Loading...' : 'Refresh reviews'}
+      </button>
       <div className="status-muted">{message}</div>
 
       {items.length > 0 ? (
@@ -131,7 +125,7 @@ export function ReviewQueuePanel() {
                   <button
                     type="button"
                     onClick={() => decide(item.id, 'approve')}
-                    disabled={workingId === item.id || !safe}
+                    disabled={workingId === item.id || !safe || !operatorCode}
                     className="quick-button"
                   >
                     {safe ? 'Approve safe handoff' : 'Risk too high'}
@@ -139,7 +133,7 @@ export function ReviewQueuePanel() {
                   <button
                     type="button"
                     onClick={() => decide(item.id, 'reject')}
-                    disabled={workingId === item.id}
+                    disabled={workingId === item.id || !operatorCode}
                     className="quick-button"
                   >
                     Reject

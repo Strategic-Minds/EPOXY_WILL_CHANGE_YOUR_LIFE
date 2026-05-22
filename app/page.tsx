@@ -1,6 +1,20 @@
 import { AgentChat } from './components/AgentChat';
+import { ThemeToggle } from './components/ThemeToggle';
 
 const primaryTimezone = 'America/New_York';
+
+const navItems = [
+  'Command Center',
+  'Agents',
+  'Content Calendar',
+  'Review Queue',
+  'Xyla Queue',
+  'Shopify',
+  'AutoBuilder',
+  'Intelligence OS',
+  'Slack Alerts',
+  'Settings'
+];
 
 const stack = [
   ['GitHub', 'System truth'],
@@ -9,7 +23,7 @@ const stack = [
   ['Supabase', 'Operating state'],
   ['Slack', 'Fast alerts'],
   ['Shopify', 'Conversion'],
-  ['Xyla', 'Approved social'],
+  ['Xyla', 'Approval gate'],
   ['Drive', 'Asset vault']
 ];
 
@@ -22,6 +36,17 @@ const agents = [
   'GitHub Architect',
   'Shopify Conversion',
   'Slack Command'
+];
+
+const systemStatus = [
+  ['Vercel AI Gateway', 'Ready'],
+  ['Supabase', 'Connected'],
+  ['Slack', 'Alert Layer'],
+  ['AutoBuilder Cron', '5m'],
+  ['Xyla', 'Approval Gate'],
+  ['Shopify', 'Conversion Layer'],
+  ['Mode', 'Review'],
+  ['Timezone', primaryTimezone]
 ];
 
 export default function HomePage() {
@@ -37,8 +62,17 @@ export default function HomePage() {
         <div>
           <div className="brand-kicker">EWL Hyperdrive OS</div>
           <h1 className="brand-title">Agent Command Center</h1>
-          <p className="brand-subtitle">Template-grade chat UI connected to Vercel AI Gateway, Supabase state, Slack alerts, Shopify, Xyla, Drive, Intelligence OS, and AutoBuilder OS.</p>
+          <p className="brand-subtitle">Controlled AI automation for content, commerce, social, operations, Intelligence OS, and AutoBuilder OS.</p>
         </div>
+
+        <nav className="nav-list" aria-label="Command center navigation">
+          {navItems.map((item, index) => (
+            <div key={item} className={index === 0 ? 'nav-item active' : 'nav-item'}>
+              <span>{item}</span>
+              {index === 0 ? <span className="nav-dot" /> : null}
+            </div>
+          ))}
+        </nav>
 
         <div className="status-card">
           <p className="status-label">Primary timezone</p>
@@ -61,14 +95,26 @@ export default function HomePage() {
       </aside>
 
       <main className="main">
+        <div className="topbar">
+          <div className="breadcrumb">EWL / Command Center / Review Mode</div>
+          <ThemeToggle />
+        </div>
+
         <section className="hero">
           <div className="hero-row">
             <div>
-              <div className="brand-kicker">Next.js Chatbot Template Integration</div>
-              <h1>Chat-first admin UI</h1>
-              <p>This interface now uses a real template shell instead of uncompiled Tailwind utility markup. The browser sends commands to a protected UI route while Vercel handles AI Gateway, Supabase logging, and Slack alerts server-side.</p>
+              <div className="brand-kicker">v0.app quality command UI</div>
+              <h1>Chat-first automation control center</h1>
+              <p>This command center preserves the live EWL stack while moving the frontend toward a v0-style AI app shell: left navigation, central chat, right-side system telemetry, theme modes, approval badges, and controlled execution boundaries.</p>
+              <div className="badge-row">
+                <span className="badge ready">Ready</span>
+                <span className="badge approval">Needs Approval</span>
+                <span className="badge blocked">Blocked</span>
+                <span className="badge review">Review Mode</span>
+                <span className="badge safe">Safe Automation</span>
+              </div>
             </div>
-            <div className="pill">Review mode active</div>
+            <div className="pill">Xyla approval-gated</div>
           </div>
         </section>
 
@@ -84,13 +130,25 @@ export default function HomePage() {
 
             <div className="messages">
               <div className="message user">Check the marketing calendar, Supabase queues, GitHub issues, Vercel deployment state, Shopify conversion blockers, Xyla readiness, and Slack alerts. Return the next best action.</div>
-              <div className="message assistant">Ready. I will inspect, summarize, route, and alert. I will not publish, deploy, bill, or change claims without approval.</div>
+              <div className="message assistant">Ready. I will inspect, summarize, route, and alert. I will not publish, deploy, bill, price, or change claims without approval.</div>
             </div>
 
             <AgentChat />
           </div>
 
           <aside className="right-panel">
+            <div className="module">
+              <h2>Operational status</h2>
+              <div className="status-list">
+                {systemStatus.map(([label, value]) => (
+                  <div key={label} className="status-row">
+                    <span>{label}</span>
+                    <strong>{value}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="module">
               <h2>Live system</h2>
               <div className="metric-grid">
@@ -111,18 +169,11 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-
-            <div className="module">
-              <h2>Safety boundary</h2>
-              <ul className="safety-list">
-                <li>Xyla receives approved content only.</li>
-                <li>Shopify owns conversion.</li>
-                <li>Supabase stores state.</li>
-                <li>Slack alerts #all-xps-intelligence-system.</li>
-                <li>No irreversible action without human approval.</li>
-              </ul>
-            </div>
           </aside>
+        </section>
+
+        <section className="safety-banner">
+          <strong>Safety boundary:</strong> No public publishing, billing, deployment, pricing, product claims, warranty claims, safety claims, student stories, customer commitments, or destructive actions without human approval.
         </section>
       </main>
     </div>

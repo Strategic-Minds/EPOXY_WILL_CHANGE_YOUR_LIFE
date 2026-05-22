@@ -3,6 +3,14 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 const primaryTimezone = 'America/New_York';
 
+type CalendarRow = {
+  id: string;
+  platform: string | null;
+  post_contents: string | null;
+  format: string | null;
+  publish_date: string | null;
+};
+
 function mapFormatToContentType(format: string | null): string {
   const value = (format ?? '').toLowerCase().trim();
   if (value.includes('reel')) return 'short_form_video';
@@ -42,10 +50,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const db = supabaseAdmin as any;
   const body = await request.json().catch(() => ({}));
   const limit = Number(body.limit ?? 25);
 
-  const { data: rows, error: rowError } = await supabaseAdmin
+  const { data, error: rowError } = await db
     .from('marketing_calendar_rows')
     .select('*')
     .is('content_item_id', null)
@@ -54,9 +63,10 @@ export async function POST(request: Request) {
 
   if (rowError) return NextResponse.json({ error: rowError.message }, { status: 500 });
 
+  const rows = (data ?? []) as CalendarRow[];
   const created: Array<{ calendar_row_id: string; content_item_id: string }> = [];
 
-  for (const row of rows ?? []) {
+  for (const row of rows) {
     const platforms = splitPlatforms(row.platform);
     const platform = platforms.join(', ');
     const topic = row.post_contents || `${row.format ?? 'Post'} for ${row.publish_date ?? 'scheduled date'}`;
@@ -64,7 +74,7 @@ export async function POST(request: Request) {
     const landingPage = defaultLandingPage(topic);
     const cta = defaultCta(topic);
 
-    const { data: contentItem, error: contentError } = await supabaseAdmin
+    const { data: contentItem, error: contentError } = await db
       .from('content_items')
       .insert({
         platform,
@@ -88,12 +98,12 @@ export async function POST(request: Request) {
 
     if (contentError) return NextResponse.json({ error: contentError.message }, { status: 500 });
 
-    await supabaseAdmin
+    await db
       .from('marketing_calendar_rows')
       .update({ content_item_id: contentItem.id, updated_at: new Date().toISOString() })
       .eq('id', row.id);
 
-    await supabaseAdmin.from('review_queue').insert({
+    await db.from('review_queue').insert({
       content_item_id: contentItem.id,
       review_type: 'content_calendar_review',
       risk_category: 'standard_review',
@@ -105,9 +115,5 @@ export async function POST(request: Request) {
     created.push({ calendar_row_id: row.id, content_item_id: contentItem.id });
   }
 
-  return NextResponse.json({
-    timezone: primaryTimezone,
-    created_count: created.length,
-    created
-  });
+  return NextResponse.json({ timezone: primaryTimezone, created_count: created.length, created });
 }
